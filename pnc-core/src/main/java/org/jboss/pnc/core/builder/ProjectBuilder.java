@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import org.jboss.pnc.core.BuildDriverFactory;
 import org.jboss.pnc.core.RepositoryManagerFactory;
 import org.jboss.pnc.core.exception.CoreException;
-import org.jboss.pnc.model.BuildCollection;
 import org.jboss.pnc.model.BuildStatus;
 import org.jboss.pnc.model.ProjectBuildConfiguration;
 import org.jboss.pnc.model.ProjectBuildResult;
