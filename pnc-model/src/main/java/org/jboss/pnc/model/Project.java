@@ -2,10 +2,7 @@ package org.jboss.pnc.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by <a href="mailto:matejonnet@gmail.com">Matej Lazar</a> on 2014-11-23.
@@ -33,10 +30,13 @@ public class Project implements Serializable {
     private String projectUrl;
 
     @ManyToOne
+    private BuildCollection buildCollection;
+
+    @ManyToOne
     private License license;
 
     @OneToMany(mappedBy = "project")
-    private Set<ProjectBuildConfiguration> projectBuildConfigurations;
+    private List<ProjectBuildConfiguration> projectBuildConfigurations;
 
     @OneToMany(mappedBy = "project")
     private List<ProjectBuildResult> projectBuildResults;
@@ -45,7 +45,7 @@ public class Project implements Serializable {
      * Instantiates a new project.
      */
     public Project() {
-        this.projectBuildConfigurations = new HashSet<>();
+        this.projectBuildConfigurations = new ArrayList<>();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Project implements Serializable {
         this.issueTrackerUrl = issueTrackerUrl;
         this.projectUrl = projectUrl;
         this.license = license;
-        this.projectBuildConfigurations = new HashSet<>(Arrays.asList(projectBuildConfigurations));
+        this.projectBuildConfigurations = Arrays.asList(projectBuildConfigurations);
     }
 
     /**
@@ -156,15 +156,8 @@ public class Project implements Serializable {
     /**
      * @return the projectBuildConfigurations
      */
-    public Set<ProjectBuildConfiguration> getProjectBuildConfigurations() {
+    public List<ProjectBuildConfiguration> getProjectBuildConfigurations() {
         return projectBuildConfigurations;
-    }
-
-    /**
-     * @param projectBuildConfigurations the projectBuildConfigurations to set
-     */
-    public void setProjectBuildConfigurations(Set<ProjectBuildConfiguration> projectBuildConfigurations) {
-        this.projectBuildConfigurations = projectBuildConfigurations;
     }
 
     /**
@@ -181,18 +174,18 @@ public class Project implements Serializable {
         this.projectBuildResults = projectBuildResults;
     }
 
-    public Set<ProjectBuildConfiguration> addProjectBuildConfiguration(ProjectBuildConfiguration configuration) {
+    public void addProjectBuildConfiguration(ProjectBuildConfiguration configuration) {
         projectBuildConfigurations.add(configuration);
-
-        return projectBuildConfigurations;
     }
 
-    public Set<ProjectBuildConfiguration> removeProjectBuildConfiguration(ProjectBuildConfiguration configuration) {
-
-        projectBuildConfigurations.remove(configuration);
-
-        return projectBuildConfigurations;
+    public BuildCollection getBuildCollection() {
+        return buildCollection;
     }
+
+    public void setBuildCollection(BuildCollection buildCollection) {
+        this.buildCollection = buildCollection;
+    }
+
 
     @Override
     public String toString() {

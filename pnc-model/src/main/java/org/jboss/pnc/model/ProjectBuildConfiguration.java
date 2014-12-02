@@ -4,10 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The Class ProjectBuildConfiguration cointains the informations needed to trigger the build of a project, i.e. the sources and
@@ -41,11 +38,8 @@ public class ProjectBuildConfiguration implements Serializable {
     @ManyToOne
     private Environment environment;
 
-    @OneToMany(mappedBy = "triggeredBuildConfiguration")
-    private Set<BuildTrigger> buildsToTrigger;
-
-    @OneToMany(mappedBy = "buildConfiguration")
-    private Set<BuildTrigger> triggeredByBuilds;
+    @OneToMany
+    private List<ProjectBuildConfiguration> dependencies;
 
     private Timestamp creationTime;
 
@@ -60,8 +54,7 @@ public class ProjectBuildConfiguration implements Serializable {
      * Instantiates a new project build configuration.
      */
     public ProjectBuildConfiguration() {
-        buildsToTrigger = new HashSet<>();
-        triggeredByBuilds = new HashSet<>();
+        dependencies = new ArrayList<>();
         creationTime = Timestamp.from(Instant.now());
     }
 
@@ -164,34 +157,6 @@ public class ProjectBuildConfiguration implements Serializable {
     }
 
     /**
-     * @return the buildsToTrigger
-     */
-    public Set<BuildTrigger> getBuildsToTrigger() {
-        return buildsToTrigger;
-    }
-
-    /**
-     * @param buildsToTrigger the buildsToTrigger to set
-     */
-    public void setBuildsToTrigger(Set<BuildTrigger> buildsToTrigger) {
-        this.buildsToTrigger = buildsToTrigger;
-    }
-
-    /**
-     * @return the triggeredByBuilds
-     */
-    public Set<BuildTrigger> getTriggeredByBuilds() {
-        return triggeredByBuilds;
-    }
-
-    /**
-     * @param triggeredByBuilds the triggeredByBuilds to set
-     */
-    public void setTriggeredByBuilds(Set<BuildTrigger> triggeredByBuilds) {
-        this.triggeredByBuilds = triggeredByBuilds;
-    }
-
-    /**
      * @return the creationTime
      */
     public Timestamp getCreationTime() {
@@ -219,33 +184,12 @@ public class ProjectBuildConfiguration implements Serializable {
         this.lastModificationTime = lastModificationTime;
     }
 
-    public Set<ProjectBuildConfiguration> getDependencies() {
-        if (!buildsToTrigger.isEmpty()) {
-            Set<ProjectBuildConfiguration> dependencies = new HashSet<>();
-            for (BuildTrigger buildTrigger : buildsToTrigger) {
-                dependencies.add(buildTrigger.getTriggeredBuildConfiguration());
-            }
-            return dependencies;
-        }
-        return Collections.emptySet();
+    public List<ProjectBuildConfiguration> getDependencies() {
+        return dependencies;
     }
 
-    public Set<BuildTrigger> addDependency(ProjectBuildConfiguration configuration) {
-        buildsToTrigger.add(new BuildTrigger(this, configuration));
-
-        return buildsToTrigger;
-    }
-
-    public Set<BuildTrigger> removeDependency(ProjectBuildConfiguration configuration) {
-
-        for (Iterator<BuildTrigger> iterator = buildsToTrigger.iterator(); iterator.hasNext();) {
-            BuildTrigger buildTrigger = iterator.next();
-            if (configuration.equals(buildTrigger.getTriggeredBuildConfiguration())) {
-                iterator.remove();
-            }
-        }
-
-        return buildsToTrigger;
+    public void addDependency(ProjectBuildConfiguration configuration) {
+        dependencies.add(configuration);
     }
 
     @Override

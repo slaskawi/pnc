@@ -1,10 +1,8 @@
 package org.jboss.pnc.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,11 +29,15 @@ public class BuildCollection implements Serializable {
     @ManyToMany
     private List<ProjectBuildResult> projectBuildResult;
 
+    @OneToMany
+    private List<Project> projects;
+
     /**
      * Instantiates a new builds the collection.
      */
     public BuildCollection() {
-
+        projects = new ArrayList<>();
+        projectBuildResult = new ArrayList<>();
     }
 
     /**
@@ -128,9 +130,17 @@ public class BuildCollection implements Serializable {
         this.projectBuildResult = projectBuildResult;
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -138,4 +148,7 @@ public class BuildCollection implements Serializable {
         return "BuildCollection [productName=" + productName + ", productVersion=" + productVersion + "]";
     }
 
+    public void addProject(Project project) {
+        projects.add(project);
+    }
 }
