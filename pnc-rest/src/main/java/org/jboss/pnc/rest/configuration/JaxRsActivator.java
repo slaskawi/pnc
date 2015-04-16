@@ -2,6 +2,7 @@ package org.jboss.pnc.rest.configuration;
 
 import org.jboss.pnc.rest.debug.TestEndpoint;
 import org.jboss.pnc.rest.endpoint.*;
+import org.jboss.pnc.rest.endpoint.wrappers.WrapperProducer;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -35,6 +36,7 @@ public class JaxRsActivator extends Application {
         resources.add(EnvironmentEndpoint.class);
         resources.add(TestEndpoint.class);
         resources.add(IllegalArgumentExceptionMapper.class);
+        resources.add(WrapperProducer.class);
     }
 
     private void addSwaggerResources(Set<Class<?>> resources) {

@@ -4,6 +4,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.jboss.pnc.core.exception.CoreException;
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.BuildConfigurationProvider;
 import org.jboss.pnc.rest.provider.BuildRecordProvider;
 import org.jboss.pnc.rest.restmodel.BuildConfigurationRest;
@@ -49,7 +50,7 @@ public class BuildConfigurationEndpoint {
             @ApiParam(value = "Pagination size") @DefaultValue("50") @QueryParam("pageSize") int pageSize,
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql) {
-        return buildConfigurationProvider.getAll(pageIndex, pageSize, sortingRsql, rsql);
+        return new MetadataList(buildConfigurationProvider.getAll(pageIndex, pageSize, sortingRsql, rsql), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Creates a new Build Configuration")
@@ -124,7 +125,7 @@ public class BuildConfigurationEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "Project id", required = true) @PathParam("projectId") Integer projectId) {
-        return buildConfigurationProvider.getAllForProject(pageIndex, pageSize, sortingRsql, rsql, projectId);
+        return new MetadataList(buildConfigurationProvider.getAllForProject(pageIndex, pageSize, sortingRsql, rsql, projectId), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets all Build Configurations of a Product")
@@ -136,7 +137,7 @@ public class BuildConfigurationEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "Product id", required = true) @PathParam("productId") Integer productId) {
-        return buildConfigurationProvider.getAllForProduct(pageIndex, pageSize, sortingRsql, rsql, productId);
+        return new MetadataList(buildConfigurationProvider.getAllForProduct(pageIndex, pageSize, sortingRsql, rsql, productId), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets all Build Configurations of the Specified Product Version")
@@ -149,6 +150,6 @@ public class BuildConfigurationEndpoint {
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "Product id", required = true) @PathParam("productId") Integer productId,
             @ApiParam(value = "Product Version id", required = true) @PathParam("versionId") Integer versionId) {
-        return buildConfigurationProvider.getAllForProductAndProductVersion(pageIndex, pageSize, sortingRsql, rsql, productId, versionId);
+        return new MetadataList(buildConfigurationProvider.getAllForProductAndProductVersion(pageIndex, pageSize, sortingRsql, rsql, productId, versionId), pageIndex, pageSize);
     }
 }

@@ -3,6 +3,7 @@ package org.jboss.pnc.rest.endpoint;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.BuildRecordSetProvider;
 import org.jboss.pnc.rest.restmodel.BuildRecordSetRest;
 
@@ -36,7 +37,7 @@ public class BuildRecordSetEndpoint {
             @ApiParam(value = "Pagination size") @DefaultValue("50") @QueryParam("pageSize") int pageSize,
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql) {
-        return buildRecordSetProvider.getAll(pageIndex, pageSize, sortingRsql, rsql);
+        return new MetadataList(buildRecordSetProvider.getAll(pageIndex, pageSize, sortingRsql, rsql), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets a specific BuildRecordSet")
@@ -55,7 +56,7 @@ public class BuildRecordSetEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "Product Version id", required = true) @PathParam("versionId") Integer versionId) {
-        return buildRecordSetProvider.getAllForProductMilestone(pageIndex, pageSize, sortingRsql, rsql, versionId);
+        return new MetadataList(buildRecordSetProvider.getAllForProductMilestone(pageIndex, pageSize, sortingRsql, rsql, versionId), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets all BuildRecordSet of a BuildRecord")
@@ -67,7 +68,7 @@ public class BuildRecordSetEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "BuildRecord id", required = true) @PathParam("recordId") Integer recordId) {
-        return buildRecordSetProvider.getAllForBuildRecord(pageIndex, pageSize, sortingRsql, rsql, recordId);
+        return new MetadataList(buildRecordSetProvider.getAllForBuildRecord(pageIndex, pageSize, sortingRsql, rsql, recordId), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Creates a new BuildRecordSet")

@@ -3,9 +3,8 @@ package org.jboss.pnc.rest.endpoint;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
-
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.UserProvider;
-import org.jboss.pnc.rest.restmodel.ProjectRest;
 import org.jboss.pnc.rest.restmodel.UserRest;
 
 import javax.inject.Inject;
@@ -13,7 +12,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import java.util.List;
 
 @Api(value = "/user", description = "User related information")
@@ -39,7 +37,7 @@ public class UserEndpoint {
             @ApiParam(value = "Pagination size") @DefaultValue("50") @QueryParam("pageSize") int pageSize,
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query") @QueryParam("q") String rsql) {
-        return userProvider.getAll(pageIndex, pageSize, sortingRsql, rsql);
+        return new MetadataList(userProvider.getAll(pageIndex, pageSize, sortingRsql, rsql), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets specific User")

@@ -3,9 +3,9 @@ package org.jboss.pnc.rest.endpoint;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.ProductReleaseProvider;
 import org.jboss.pnc.rest.provider.ProjectProvider;
-import org.jboss.pnc.rest.restmodel.BuildConfigurationSetRest;
 import org.jboss.pnc.rest.restmodel.ProductReleaseRest;
 
 import javax.inject.Inject;
@@ -38,7 +38,7 @@ public class ProductReleaseEndpoint {
             @ApiParam(value = "Pagination size") @DefaultValue("50") @QueryParam("pageSize") int pageSize,
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query") @QueryParam("q") String rsql) {
-        return productReleaseProvider.getAll(pageIndex, pageSize, sortingRsql, rsql);
+        return new MetadataList(productReleaseProvider.getAll(pageIndex, pageSize, sortingRsql, rsql), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets specific Product Release")

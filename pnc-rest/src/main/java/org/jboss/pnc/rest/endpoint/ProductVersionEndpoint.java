@@ -3,6 +3,7 @@ package org.jboss.pnc.rest.endpoint;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.ProductVersionProvider;
 import org.jboss.pnc.rest.provider.ProjectProvider;
 import org.jboss.pnc.rest.restmodel.BuildConfigurationSetRest;
@@ -39,7 +40,7 @@ public class ProductVersionEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query") @QueryParam("q") String rsql,
             @ApiParam(value = "Product id", required = true) @PathParam("productId") Integer productId) {
-        return productVersionProvider.getAll(pageIndex, pageSize, sortingRsql, rsql, productId);
+        return new MetadataList(productVersionProvider.getAll(pageIndex, pageSize, sortingRsql, rsql, productId), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets specific Product Version")
@@ -80,7 +81,7 @@ public class ProductVersionEndpoint {
             @ApiParam(value = "RSQL query") @QueryParam("q") String rsql,
             @ApiParam(value = "Product id", required = true) @PathParam("productId") Integer productId,
             @ApiParam(value = "Product Version id", required = true) @PathParam("id") Integer id) {
-        return productVersionProvider.getBuildConfigurationSets(id);
+        return new MetadataList(productVersionProvider.getBuildConfigurationSets(id), pageIndex, pageSize);
     }
 
 }

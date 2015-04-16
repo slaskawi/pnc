@@ -3,6 +3,7 @@ package org.jboss.pnc.rest.endpoint;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.ProjectProvider;
 import org.jboss.pnc.rest.restmodel.ProjectRest;
 
@@ -36,7 +37,7 @@ public class ProjectEndpoint {
             @ApiParam(value = "Pagination size") @DefaultValue("50") @QueryParam("pageSize") int pageSize,
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query") @QueryParam("q") String rsql) {
-        return projectProvider.getAll(pageIndex, pageSize, sortingRsql, rsql);
+        return new MetadataList(projectProvider.getAll(pageIndex, pageSize, sortingRsql, rsql), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets specific Project")

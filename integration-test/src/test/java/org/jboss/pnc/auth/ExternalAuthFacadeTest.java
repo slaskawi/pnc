@@ -1,13 +1,15 @@
 package org.jboss.pnc.auth;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.InputStream;
-
 import org.jboss.logging.Logger;
+import org.jboss.pnc.test.category.RemoteTest;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.io.InputStream;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author pslegr
@@ -22,6 +24,7 @@ import org.junit.Test;
  *  is defined to fulfill all above conditions 
  *
  */
+@Category(RemoteTest.class)
 public class ExternalAuthFacadeTest {
     
     protected Logger log = Logger.getLogger(ExternalAuthFacadeTest.class);

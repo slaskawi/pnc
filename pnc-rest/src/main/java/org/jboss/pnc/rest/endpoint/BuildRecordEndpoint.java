@@ -3,6 +3,7 @@ package org.jboss.pnc.rest.endpoint;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.BuildRecordProvider;
 import org.jboss.pnc.rest.restmodel.BuildRecordRest;
 
@@ -35,7 +36,7 @@ public class BuildRecordEndpoint {
             @ApiParam(value = "Pagination size") @DefaultValue("50") @QueryParam("pageSize") int pageSize,
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql) {
-        return buildRecordProvider.getAllArchived(pageIndex, pageSize, sortingRsql, rsql);
+        return new MetadataList(buildRecordProvider.getAllArchived(pageIndex, pageSize, sortingRsql, rsql), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets specific Build Record")
@@ -61,7 +62,7 @@ public class BuildRecordEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "Build Configuration id", required = true) @PathParam("configurationId") Integer configurationId) {
-        return buildRecordProvider.getAllForBuildConfiguration(pageIndex, pageSize, sortingRsql, rsql, configurationId);
+        return new MetadataList(buildRecordProvider.getAllForBuildConfiguration(pageIndex, pageSize, sortingRsql, rsql, configurationId), pageIndex, pageSize);
     }
 
     @ApiOperation(value = "Gets the Build Records linked to a specific Project")
@@ -73,6 +74,6 @@ public class BuildRecordEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "Project id", required = true) @PathParam("projectId") Integer projectId,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql) {
-        return buildRecordProvider.getAllForProject(pageIndex, pageSize, sortingRsql, rsql, projectId);
+        return new MetadataList(buildRecordProvider.getAllForProject(pageIndex, pageSize, sortingRsql, rsql, projectId), pageIndex, pageSize);
     }
 }

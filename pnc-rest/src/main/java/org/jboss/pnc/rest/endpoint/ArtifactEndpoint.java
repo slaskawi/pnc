@@ -4,6 +4,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 
+import org.jboss.pnc.rest.endpoint.wrappers.MetadataList;
 import org.jboss.pnc.rest.provider.ArtifactProvider;
 import org.jboss.pnc.rest.restmodel.ArtifactRest;
 
@@ -37,6 +38,6 @@ public class ArtifactEndpoint {
             @ApiParam(value = "Sorting RSQL") @QueryParam("sort") String sortingRsql,
             @ApiParam(value = "RSQL query", required = false) @QueryParam("q") String rsql,
             @ApiParam(value = "Build Result id", required = true) @PathParam("buildRecordId") Integer buildRecordId) {
-        return artifactProvider.getAll(pageIndex, pageSize, sortingRsql, rsql, buildRecordId);
+        return new MetadataList(artifactProvider.getAll(pageIndex, pageSize, sortingRsql, rsql, buildRecordId), pageIndex, pageSize);
     }
 }
