@@ -6,6 +6,7 @@ import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -24,6 +25,8 @@ public class Deployments {
 
         setTestableWar(ear);
 
+        addTestPersistenceXml(ear);
+
         return ear;
     }
 
@@ -35,6 +38,8 @@ public class Deployments {
         addTestCommonWithTransitives(ear, mavenResolver);
 
         setTestableWar(ear);
+
+        addTestPersistenceXml(ear);
 
         return ear;
     }
@@ -58,5 +63,10 @@ public class Deployments {
     private static void addTestCommonWithoutTransitives(EnterpriseArchive webArchive, PomEquippedResolveStage mavenResolver) {
         File[] manuallyAddedLibs = mavenResolver.resolve("org.jboss.pnc:test-common").withoutTransitivity().asFile();
         webArchive.addAsLibraries(manuallyAddedLibs);
+    }
+
+    private static void addTestPersistenceXml(EnterpriseArchive enterpriseArchive) {
+        JavaArchive datastoreJar = enterpriseArchive.getAsType(JavaArchive.class, "/datastore.jar");
+        datastoreJar.addAsManifestResource("test-ds.xml", "persistence.xml");
     }
 }
